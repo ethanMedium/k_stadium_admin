@@ -37,13 +37,13 @@ function Header({ isLogged, authService, setIsLogged }) {
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
-                    <a className="flex-shrink-0" href={"/"}>
+                    <Link className="flex-shrink-0">
                       <img
                         className="h-8 w-8"
                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                         alt="K STADIUM"
                       />
-                    </a>
+                    </Link>
                     <div className="hidden md:flex justify-between">
                       {isLogged ? (
                         <div className="ml-10 flex items-baseline space-x-4">
