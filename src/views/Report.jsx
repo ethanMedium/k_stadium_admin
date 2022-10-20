@@ -1,12 +1,15 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-// login
-import { authValidator } from "../service/authService";
-
-function Report() {
+function Report({ authService }) {
+  const navigate = useNavigate();
   useEffect(() => {
-    authValidator();
-  }, []);
+    authService.signIn().then((result) => {
+      if (!result) {
+        navigate("/login");
+      }
+    });
+  });
 
   return (
     <>

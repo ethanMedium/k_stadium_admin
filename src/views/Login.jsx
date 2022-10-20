@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ const password = process.env.REACT_APP_LOGIN_KEY;
 const successToken = process.env.REACT_APP_SUCCESS;
 const secretKey = process.env.REACT_APP_SECRET_KEY;
 
-function Login() {
+function Login({ authService, setIsLogged }) {
   const navigate = useNavigate();
   const formValidator = (e) => {
     e.preventDefault();
@@ -17,13 +17,18 @@ function Login() {
     if (userPassword === password) {
       const encrypted = CryptoJS.AES.encrypt(successToken, secretKey);
       window.localStorage.setItem("user", encrypted);
+      setIsLogged(true);
       navigate("/");
     } else {
       window.alert("비밀번호가 틀립니다.");
       e.target.password.value = "";
     }
   };
-
+  useEffect(() => {
+    authService.signIn().then((result) => {
+      setIsLogged(result);
+    });
+  });
   return (
     <>
       <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

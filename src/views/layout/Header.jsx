@@ -2,10 +2,9 @@
 import React, { useState } from "react";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // src
-
 const navigationBase = [
   { name: "Dashboard", href: "/", current: true },
   { name: "Monitor", href: "/monitor", current: false },
@@ -15,9 +14,10 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function Header() {
+function Header({ isLogged, authService, setIsLogged }) {
   const [navigation, setNavigation] = useState(navigationBase);
-
+  const navigate = useNavigate();
+  // header tab switcher
   const currentTab = (e) => {
     let tab = e.target.text;
     let turnOn = navigation.findIndex((item) => item.name === tab);
@@ -44,27 +44,50 @@ function Header() {
                         alt="K STADIUM"
                       />
                     </a>
-                    <div className="hidden md:block">
-                      <div className="ml-10 flex items-baseline space-x-4">
-                        {navigation.map((item) => (
-                          <Link
-                            key={item.name}
-                            to={item.href}
-                            className={classNames(
-                              item.current
-                                ? "bg-gray-900 text-white"
-                                : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                              "px-3 py-2 rounded-md text-sm font-medium"
-                            )}
-                            aria-current={item.current ? "page" : undefined}
-                            onClick={currentTab}
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
-                      </div>
+                    <div className="hidden md:flex justify-between">
+                      {isLogged ? (
+                        <div className="ml-10 flex items-baseline space-x-4">
+                          {navigation.map((item) => (
+                            <Link
+                              key={item.name}
+                              to={item.href}
+                              className={classNames(
+                                item.current
+                                  ? "bg-gray-900 text-white"
+                                  : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                                "px-3 py-2 rounded-md text-sm font-medium"
+                              )}
+                              aria-current={item.current ? "page" : undefined}
+                              onClick={currentTab}
+                            >
+                              {item.name}
+                            </Link>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-gray-300 hover:bg-gray-700  px-3 py-2 rounded-md text-sm font-medium">
+                          Welcome To K STADIUM
+                        </div>
+                      )}
                     </div>
                   </div>
+                  {isLogged ? (
+                    <div
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white hover:cursor-pointer px-3 py-2 rounded-md text-sm font-medium"
+                      onClick={() =>
+                        authService.signOut().then(() => {
+                          setIsLogged(false);
+                          return navigate("/login");
+                        })
+                      }
+                    >
+                      Sign Out
+                    </div>
+                  ) : (
+                    <div className="text-gray-300 hover:bg-gray-700 hover:text-white hover:cursor-pointer px-3 py-2 rounded-md text-sm font-medium">
+                      Sing In
+                    </div>
+                  )}
                   <div className="-mr-2 flex md:hidden">
                     {/* Mobile menu button */}
                     <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
