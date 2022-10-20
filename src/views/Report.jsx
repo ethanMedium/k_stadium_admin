@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-function report() {
+// login
+import { authValidator } from "../service/authService";
+
+function Report() {
+  useEffect(() => {
+    authValidator();
+  }, []);
+
   return (
     <>
       <header className="bg-white shadow">
@@ -23,4 +30,4 @@ function report() {
   );
 }
 
-export default report;
+export default Report;

@@ -3,16 +3,22 @@ import React from "react";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
 
+//Crypto
+import CryptoJS from "crypto-js";
+const password = process.env.REACT_APP_LOGIN_KEY;
+const successToken = process.env.REACT_APP_SUCCESS;
+const secretKey = process.env.REACT_APP_SECRET_KEY;
+
 function Login() {
   const navigate = useNavigate();
-
   const formValidator = (e) => {
     e.preventDefault();
     const userPassword = e.target.password.value;
-    const tempPassword = "1234";
-    if (userPassword === tempPassword) {
+    if (userPassword === password) {
+      const encrypted = CryptoJS.AES.encrypt(successToken, secretKey);
+      window.localStorage.setItem("user", encrypted);
       navigate("/");
-    } else if (userPassword !== tempPassword) {
+    } else {
       window.alert("비밀번호가 틀립니다.");
       e.target.password.value = "";
     }

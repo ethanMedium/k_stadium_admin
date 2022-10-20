@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-function monitor() {
+// login
+import { authValidator } from "../service/authService";
+
+function Monitor() {
+  useEffect(() => {
+    authValidator();
+  }, []);
+
   return (
     <>
       <header className="bg-white shadow">
@@ -23,4 +30,4 @@ function monitor() {
   );
 }
 
-export default monitor;
+export default Monitor;

@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
+
+// login
+import { authValidator } from "../service/authService";
 
 function Home() {
+  useEffect(() => {
+    authValidator();
+  }, []);
+
   return (
     <>
       <header className="bg-white shadow">

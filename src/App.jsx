@@ -1,9 +1,9 @@
 // react
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 // src
-import Header from "./components/layout/Header";
+import Header from "./views/layout/Header";
 import Home from "./views/Home";
 import Monitor from "./views/Monitor";
 import Login from "./views/Login";
