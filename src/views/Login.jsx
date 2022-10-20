@@ -25,9 +25,17 @@ function Login({ authService, setIsLogged }) {
     }
   };
   useEffect(() => {
-    authService.signIn().then((result) => {
-      setIsLogged(result);
-    });
+    authService
+      .signIn()
+      .then((result) => {
+        setIsLogged(result);
+        return result;
+      })
+      .then((result) => {
+        if (result) {
+          navigate("/");
+        }
+      });
   });
   return (
     <>

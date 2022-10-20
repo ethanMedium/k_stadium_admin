@@ -84,7 +84,10 @@ function Header({ isLogged, authService, setIsLogged }) {
                       Sign Out
                     </div>
                   ) : (
-                    <div className="text-gray-300 hover:bg-gray-700 hover:text-white hover:cursor-pointer px-3 py-2 rounded-md text-sm font-medium">
+                    <div
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white hover:cursor-pointer px-3 py-2 rounded-md text-sm font-medium"
+                      onClick={() => navigate("/login")}
+                    >
                       Sing In
                     </div>
                   )}
