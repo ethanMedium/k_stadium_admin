@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import DateRangePicker from "flowbite-datepicker/DateRangePicker";
 
 function Report({ authService }) {
   const navigate = useNavigate();
