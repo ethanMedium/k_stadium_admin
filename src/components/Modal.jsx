@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 
 function Modal({ showModal, setShowModal, currentTopic, discourseService }) {
   const [topic, setTopic] = useState("");
+  const [content, setContent] = useState("");
+
   useEffect(() => {
     if (showModal) {
-      discourseService
-        .getSingleTopic(currentTopic)
-        .then((result) => setTopic(result));
+      discourseService.getSingleTopic(currentTopic).then((result) => {
+        setTopic(result);
+        setContent(result.post_stream.posts[0].cooked);
+      });
     }
     return () => setTopic("");
   }, [currentTopic, discourseService, showModal]);
@@ -31,8 +34,8 @@ function Modal({ showModal, setShowModal, currentTopic, discourseService }) {
                   </button>
                 </div>
                 {/*body*/}
-                <div className="relative p-6 flex-auto overflow-hidden">
-                  {topic ? topic.post_stream.posts[0].cooked : " "}
+                <div className="relative p-6 max-h-96 flex-auto overflow-scroll">
+                  <div dangerouslySetInnerHTML={{ __html: content }} />
                 </div>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
