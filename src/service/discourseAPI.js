@@ -32,6 +32,12 @@ class DiscourseService {
     const topic = data.data;
     return topic;
   }
+  async getUserComments(username) {
+    const url = `${baseURL}/search.json?q=@${username}%20order:latest%20order:latest_topic`;
+    const data = await axios.get(url, opt);
+    const comments = data.data;
+    return comments;
+  }
 }
 
 export default DiscourseService;

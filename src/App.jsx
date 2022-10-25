@@ -38,7 +38,12 @@ function App({ authService, discourseService }) {
         />
         <Route
           path="/monitor"
-          element={<Monitor authService={authService} />}
+          element={
+            <Monitor
+              authService={authService}
+              discourseService={discourseService}
+            />
+          }
         />
         <Route path="/report" element={<Report authService={authService} />} />
         <Route
