@@ -11,7 +11,10 @@ function Modal({ showModal, setShowModal, currentTopic, discourseService }) {
         setContent(result.post_stream.posts[0].cooked);
       });
     }
-    return () => setTopic("");
+    return () => {
+      setTopic("");
+      setContent("");
+    };
   }, [currentTopic, discourseService, showModal]);
   return (
     <>
