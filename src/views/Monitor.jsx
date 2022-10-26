@@ -77,7 +77,11 @@ function Monitor({ authService, discourseService }) {
               </button>
             </div>
           </form>
-          <div className="text-xl border-b-8 py-5 my-4">POSTS</div>
+          {comments !== "" ? (
+            <div className="text-xl border-b-8 py-5 my-4">POSTS</div>
+          ) : (
+            ""
+          )}
           <div>
             {comments !== ""
               ? comments.map((item) => (
@@ -92,7 +96,11 @@ function Monitor({ authService, discourseService }) {
                 ))
               : ""}
           </div>
-          <div className="text-xl border-b-8 py-5 my-4">TOPIC</div>
+          {comments !== "" ? (
+            <div className="text-xl border-b-8 py-5 my-4">TOPIC</div>
+          ) : (
+            ""
+          )}
           <div>
             {topics !== ""
               ? topics.map((item) => (

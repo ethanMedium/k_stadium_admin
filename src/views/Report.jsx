@@ -8,9 +8,13 @@ function Report({ authService, mediumService }) {
 
   const submit = (e) => {
     e.preventDefault();
-    setDate({ start: e.target.start.value, end: e.target.end.value });
+    setDate({
+      start: e.target.start.value,
+      end: e.target.end.value,
+      soID: e.target.soID.value,
+    });
     mediumService.getDailyRewards().then((result) => {
-      console.log(result.data);
+      console.log(result);
     });
   };
   useEffect(() => {
@@ -35,6 +39,32 @@ function Report({ authService, mediumService }) {
           {/* Replace with your content */}
           <form onSubmit={(e) => submit(e)}>
             <div className="flex items-center mb-10">
+              <select
+                id="soID"
+                name="soID"
+                defaultValue={1}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block mr-9 min-w-[20%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                <option value="1">Choose a SO</option>
+                <option value="2">Ryan</option>
+                <option value="3">Megan</option>
+                <option value="4">Yes</option>
+                <option value="5">Genesis</option>
+                <option value="6">GenesisAZ</option>
+                <option value="7">IBOTIUM</option>
+                <option value="8">""</option>
+                <option value="9">""</option>
+                <option value="10">KCPonwer</option>
+                <option value="11">DA</option>
+                <option value="12">B.K.crew</option>
+                <option value="13">Main</option>
+                <option value="14">ADRF</option>
+                <option value="15">kgroup</option>
+                <option value="16">GAONNURI</option>
+                <option value="17">crown</option>
+                <option value="18">sky</option>
+                <option value="19">k-star</option>
+              </select>
               <div className="relative">
                 <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                   <svg
@@ -108,9 +138,243 @@ function Report({ authService, mediumService }) {
             </div>
           </section>
 
-          {/*  표  */}
+          {/*  Reward Log  */}
 
           <div className="text-xl mb-4 font-bold">1. Reward Log</div>
+          <section className="overflow-x-auto relative shadow-md sm:rounded-lg mb-10">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase dark:text-gray-400">
+                <tr className="border-b">
+                  <th
+                    scope="col"
+                    className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
+                  >
+                    Block Number
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
+                  >
+                    Date
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
+                  >
+                    SO Total Reward
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
+                  >
+                    5% <br /> 운영수익
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
+                  >
+                    SO Leader <br /> Total Reward
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
+                  >
+                    Delegate
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
+                  >
+                    Members
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-gray-200 dark:border-gray-700">
+                  <th
+                    scope="row"
+                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-800"
+                  >
+                    12151153
+                  </th>
+                  <td className="py-4 px-6">2022-09-01</td>
+                  <td className="py-4 px-6 dark:bg-gray-800">
+                    2,725.56844 KOK
+                  </td>
+                  <td className="py-4 px-6">136.28 KOK</td>
+                  <td className="py-4 px-6">348.05472 KOK</td>
+                  <td className="py-4 px-6">5,966,909.40560 SOP</td>
+                  <td className="py-4 px-6">695</td>
+                </tr>
+                <tr className="border-b border-gray-200 dark:border-gray-700">
+                  <th
+                    scope="row"
+                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-800"
+                  >
+                    12151153
+                  </th>
+                  <td className="py-4 px-6">2022-09-01</td>
+                  <td className="py-4 px-6 dark:bg-gray-800">
+                    2,725.56844 KOK
+                  </td>
+                  <td className="py-4 px-6">136.28 KOK</td>
+                  <td className="py-4 px-6">348.05472 KOK</td>
+                  <td className="py-4 px-6">5,966,909.40560 SOP</td>
+                  <td className="py-4 px-6">695</td>
+                </tr>
+                <tr className="border-b border-gray-200 dark:border-gray-700">
+                  <th
+                    scope="row"
+                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-800"
+                  >
+                    12151153
+                  </th>
+                  <td className="py-4 px-6">2022-09-01</td>
+                  <td className="py-4 px-6 dark:bg-gray-800">
+                    2,725.56844 KOK
+                  </td>
+                  <td className="py-4 px-6">136.28 KOK</td>
+                  <td className="py-4 px-6">348.05472 KOK</td>
+                  <td className="py-4 px-6">5,966,909.40560 SOP</td>
+                  <td className="py-4 px-6">695</td>
+                </tr>
+                <tr className="border-b border-gray-200 dark:border-gray-700">
+                  <th
+                    scope="row"
+                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-800"
+                  >
+                    12151153
+                  </th>
+                  <td className="py-4 px-6">2022-09-01</td>
+                  <td className="py-4 px-6 dark:bg-gray-800">
+                    2,725.56844 KOK
+                  </td>
+                  <td className="py-4 px-6">136.28 KOK</td>
+                  <td className="py-4 px-6">348.05472 KOK</td>
+                  <td className="py-4 px-6">5,966,909.40560 SOP</td>
+                  <td className="py-4 px-6">695</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section className="overflow-x-auto relative shadow-md sm:rounded-lg mb-10">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase dark:text-gray-400">
+                <tr className="border-b">
+                  <th
+                    scope="col"
+                    className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
+                  >
+                    Block Number
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
+                  >
+                    Date
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
+                  >
+                    SO Total Reward
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
+                  >
+                    5% <br /> 운영수익
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
+                  >
+                    SO Leader <br /> Total Reward
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
+                  >
+                    Delegate
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
+                  >
+                    Members
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-gray-200 dark:border-gray-700">
+                  <th
+                    scope="row"
+                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-800"
+                  >
+                    12151153
+                  </th>
+                  <td className="py-4 px-6">2022-09-01</td>
+                  <td className="py-4 px-6 dark:bg-gray-800">
+                    2,725.56844 KOK
+                  </td>
+                  <td className="py-4 px-6">136.28 KOK</td>
+                  <td className="py-4 px-6">348.05472 KOK</td>
+                  <td className="py-4 px-6">5,966,909.40560 SOP</td>
+                  <td className="py-4 px-6">695</td>
+                </tr>
+                <tr className="border-b border-gray-200 dark:border-gray-700">
+                  <th
+                    scope="row"
+                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-800"
+                  >
+                    12151153
+                  </th>
+                  <td className="py-4 px-6">2022-09-01</td>
+                  <td className="py-4 px-6 dark:bg-gray-800">
+                    2,725.56844 KOK
+                  </td>
+                  <td className="py-4 px-6">136.28 KOK</td>
+                  <td className="py-4 px-6">348.05472 KOK</td>
+                  <td className="py-4 px-6">5,966,909.40560 SOP</td>
+                  <td className="py-4 px-6">695</td>
+                </tr>
+                <tr className="border-b border-gray-200 dark:border-gray-700">
+                  <th
+                    scope="row"
+                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-800"
+                  >
+                    12151153
+                  </th>
+                  <td className="py-4 px-6">2022-09-01</td>
+                  <td className="py-4 px-6 dark:bg-gray-800">
+                    2,725.56844 KOK
+                  </td>
+                  <td className="py-4 px-6">136.28 KOK</td>
+                  <td className="py-4 px-6">348.05472 KOK</td>
+                  <td className="py-4 px-6">5,966,909.40560 SOP</td>
+                  <td className="py-4 px-6">695</td>
+                </tr>
+                <tr className="border-b border-gray-200 dark:border-gray-700">
+                  <th
+                    scope="row"
+                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-800"
+                  >
+                    12151153
+                  </th>
+                  <td className="py-4 px-6">2022-09-01</td>
+                  <td className="py-4 px-6 dark:bg-gray-800">
+                    2,725.56844 KOK
+                  </td>
+                  <td className="py-4 px-6">136.28 KOK</td>
+                  <td className="py-4 px-6">348.05472 KOK</td>
+                  <td className="py-4 px-6">5,966,909.40560 SOP</td>
+                  <td className="py-4 px-6">695</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
           <section className="overflow-x-auto relative shadow-md sm:rounded-lg mb-10">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase dark:text-gray-400">
