@@ -9,7 +9,7 @@ import Monitor from "./views/Monitor";
 import Login from "./views/Login";
 import Report from "./views/Report";
 
-function App({ authService, discourseService }) {
+function App({ authService, discourseService, mediumService }) {
   const [isLogged, setIsLogged] = useState(false);
 
   useEffect(() => {
@@ -45,7 +45,12 @@ function App({ authService, discourseService }) {
             />
           }
         />
-        <Route path="/report" element={<Report authService={authService} />} />
+        <Route
+          path="/report"
+          element={
+            <Report authService={authService} mediumService={mediumService} />
+          }
+        />
         <Route
           path="/login"
           element={

@@ -13,7 +13,6 @@ function Monitor({ authService, discourseService }) {
       if (result.posts.length !== 0) {
         setComments(result.posts);
         setTopics(result.topics);
-        console.log(result);
       }
     });
   };
