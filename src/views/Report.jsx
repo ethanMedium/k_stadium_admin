@@ -1,20 +1,54 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import RewardTD from "../components/RewardTD";
 
 function Report({ authService, mediumService }) {
   const navigate = useNavigate();
-  const [date, setDate] = useState({});
-
+  const [query, setQuery] = useState("");
+  const [data, setData] = useState({
+    result: [
+      {
+        v2_2022_9_1: {
+          so: 18,
+          block: 12151153,
+          time: "2022-09-01",
+          dailyReward: "1365338737719550385133",
+          soLeaderReward: "68266936885977519256.65",
+          memberCount: 129,
+          delegated: "313596870247000000000",
+          extra: " ",
+        },
+      },
+      {
+        v2_2022_9_2: {
+          so: 18,
+          block: 12151154,
+          time: "2022-09-01",
+          dailyReward: "1365338737719550385133",
+          soLeaderReward: "68266936885977519256.65",
+          memberCount: 129,
+          delegated: "313596870247000000000",
+          extra: " ",
+        },
+      },
+    ],
+    keys: ["v2_2022_9_1", "v2_2022_9_2"],
+  });
   const submit = (e) => {
     e.preventDefault();
-    setDate({
-      start: e.target.start.value,
-      end: e.target.end.value,
+    const dateQuery = e.target.start.value.replace(/-/gi, "/");
+    const date = dateQuery.split("/");
+    setQuery({
+      start: `${date[0]}.${date[1]}.${date[2]}`,
+      end: `${date[0]}.${parseInt(date[1]) + parseInt(e.target.many.value)}.${
+        date[2]
+      }`,
+      date: dateQuery,
+      address: e.target.address.value,
       soID: e.target.soID.value,
-    });
-    mediumService.getDailyRewards().then((result) => {
-      console.log(result);
+      so: e.target.soID.options[e.target.soID.selectedIndex].text,
+      many: e.target.many.value,
     });
   };
   useEffect(() => {
@@ -24,6 +58,19 @@ function Report({ authService, mediumService }) {
       }
     });
   });
+  useEffect(() => {
+    if (query !== "") {
+      if (query.address !== "") {
+        console.log("엥?");
+      } else {
+        mediumService.getDailyRewards(query.date, query.soID).then((result) => {
+          const object = Object.keys(result);
+          setData({ result: result, keys: object });
+          console.log(result);
+        });
+      }
+    }
+  }, [mediumService, query]);
 
   return (
     <>
@@ -35,25 +82,25 @@ function Report({ authService, mediumService }) {
         </div>
       </header>
       <main>
-        <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl py-6 sm:px-6">
           {/* Replace with your content */}
           <form onSubmit={(e) => submit(e)}>
-            <div className="flex items-center mb-10">
+            <div className="flex justify-between items-center mb-10">
+              <span className=" text-gray-500">SO:</span>
               <select
                 id="soID"
                 name="soID"
-                defaultValue={1}
+                required
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block mr-9 min-w-[20%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
-                <option value="1">Choose a SO</option>
                 <option value="2">Ryan</option>
                 <option value="3">Megan</option>
                 <option value="4">Yes</option>
                 <option value="5">Genesis</option>
                 <option value="6">GenesisAZ</option>
                 <option value="7">IBOTIUM</option>
-                <option value="8">""</option>
-                <option value="9">""</option>
+                <option value="8" disabled></option>
+                <option value="9" disabled></option>
                 <option value="10">KCPonwer</option>
                 <option value="11">DA</option>
                 <option value="12">B.K.crew</option>
@@ -65,6 +112,7 @@ function Report({ authService, mediumService }) {
                 <option value="18">sky</option>
                 <option value="19">k-star</option>
               </select>
+              <span className="text-gray-500">Date :</span>
               <div className="relative">
                 <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                   <svg
@@ -84,13 +132,25 @@ function Report({ authService, mediumService }) {
                 <input
                   name="start"
                   type="text"
+                  required
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Select date start"
                   // eslint-disable-next-line no-octal-escape
                   pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))"
                 />
               </div>
-              <span className="mx-4 text-gray-500">to</span>
+              <select
+                id="many"
+                name="many"
+                required
+                className=" -ml-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block m p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                <option value="0">1</option>
+                <option value="1">2</option>
+                <option value="2">3</option>
+                <option value="3">4</option>
+              </select>
+              <span className=" text-gray-500">Wallet address :</span>
               <div className="relative">
                 <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                   <svg
@@ -108,10 +168,10 @@ function Report({ authService, mediumService }) {
                   </svg>
                 </div>
                 <input
-                  name="end"
+                  name="address"
                   type="text"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Select date end"
+                  placeholder="address"
                   pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))"
                 />
               </div>
@@ -128,13 +188,15 @@ function Report({ authService, mediumService }) {
               <span className="text-xl font-bold">대상</span>
             </div>
             <div className="outline outline-1 outline-gray-300 w-[40%] flex items-center justify-center">
-              <span className="text-xl">ADRF</span>
+              <span className="text-xl">{query.so}</span>
             </div>
             <div className="outline outline-1 outline-gray-300 w-[10%] flex items-center bg-gray-100 justify-center">
               <span className="text-xl font-bold">기간</span>
             </div>
             <div className="outline outline-1 outline-gray-300 w-[40%] flex items-center justify-center">
-              <span className="text-xl">2022.06.09 ~ 2022.09.08</span>
+              <span className="text-xl">
+                {query.start} ~ {query.end}
+              </span>
             </div>
           </section>
 
@@ -190,70 +252,11 @@ function Report({ authService, mediumService }) {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-800"
-                  >
-                    12151153
-                  </th>
-                  <td className="py-4 px-6">2022-09-01</td>
-                  <td className="py-4 px-6 dark:bg-gray-800">
-                    2,725.56844 KOK
-                  </td>
-                  <td className="py-4 px-6">136.28 KOK</td>
-                  <td className="py-4 px-6">348.05472 KOK</td>
-                  <td className="py-4 px-6">5,966,909.40560 SOP</td>
-                  <td className="py-4 px-6">695</td>
-                </tr>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-800"
-                  >
-                    12151153
-                  </th>
-                  <td className="py-4 px-6">2022-09-01</td>
-                  <td className="py-4 px-6 dark:bg-gray-800">
-                    2,725.56844 KOK
-                  </td>
-                  <td className="py-4 px-6">136.28 KOK</td>
-                  <td className="py-4 px-6">348.05472 KOK</td>
-                  <td className="py-4 px-6">5,966,909.40560 SOP</td>
-                  <td className="py-4 px-6">695</td>
-                </tr>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-800"
-                  >
-                    12151153
-                  </th>
-                  <td className="py-4 px-6">2022-09-01</td>
-                  <td className="py-4 px-6 dark:bg-gray-800">
-                    2,725.56844 KOK
-                  </td>
-                  <td className="py-4 px-6">136.28 KOK</td>
-                  <td className="py-4 px-6">348.05472 KOK</td>
-                  <td className="py-4 px-6">5,966,909.40560 SOP</td>
-                  <td className="py-4 px-6">695</td>
-                </tr>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-800"
-                  >
-                    12151153
-                  </th>
-                  <td className="py-4 px-6">2022-09-01</td>
-                  <td className="py-4 px-6 dark:bg-gray-800">
-                    2,725.56844 KOK
-                  </td>
-                  <td className="py-4 px-6">136.28 KOK</td>
-                  <td className="py-4 px-6">348.05472 KOK</td>
-                  <td className="py-4 px-6">5,966,909.40560 SOP</td>
-                  <td className="py-4 px-6">695</td>
-                </tr>
+                {data !== ""
+                  ? data.result.map((item, idx) => (
+                      <RewardTD key={idx} item={item} date={data.keys[idx]} />
+                    ))
+                  : ""}
               </tbody>
             </table>
           </section>

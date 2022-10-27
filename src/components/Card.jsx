@@ -1,7 +1,7 @@
 import React from "react";
 
 function Card({ title, image, created, setShowModal, id, setCurrentTopic }) {
-  const date = new Date(created).toUTCString().split(" ");
+  const date = new Date(created).toString().split(" ");
   return (
     <div
       className="md:max-w-sm rounded shadow-lg cursor-pointer hover:bg-gray-200"

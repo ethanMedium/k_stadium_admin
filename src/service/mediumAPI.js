@@ -9,8 +9,8 @@ const opt = {
 };
 
 class MediumService {
-  async getDailyRewards() {
-    const url = `${baseURL}report/2022/10/14`;
+  async getDailyRewards(date, soID) {
+    const url = `${baseURL}report/${date}/${soID}`;
     const data = await axios.get(url, opt);
     const refined = data.data.replace("<pre>", "");
     const refined2 = refined.replace("</pre>", "");
