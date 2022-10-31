@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/k_stadium_admin/static/css/main.6f965cf5.css",
+    "main.js": "/k_stadium_admin/static/js/main.f4cf7cba.js",
+    "index.html": "/k_stadium_admin/index.html",
+    "main.6f965cf5.css.map": "/k_stadium_admin/static/css/main.6f965cf5.css.map",
+    "main.f4cf7cba.js.map": "/k_stadium_admin/static/js/main.f4cf7cba.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6f965cf5.css",
+    "static/js/main.f4cf7cba.js"
+  ]
+}
