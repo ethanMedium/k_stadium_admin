@@ -32,7 +32,8 @@ function Report({ authService, mediumService }) {
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [data, setData] = useState([]);
-
+  const [months, setMonths] = useState([]);
+  const [total, setTotal] = useState([]);
   const submit = (e) => {
     e.preventDefault();
     const start = e.target.start.value.replace(/-/gi, ".");
@@ -61,6 +62,7 @@ function Report({ authService, mediumService }) {
       setLoading(true);
       setData([]);
       let data = [];
+      let months = [];
       if (query !== "") {
         if (query.logic && query.logic.many > 0) {
           //date 들
@@ -75,6 +77,7 @@ function Report({ authService, mediumService }) {
                 )
                 .then((result) => {
                   data.push(result.slice(query.logic.startDay - 1));
+                  months.push(query.logic.startMonth);
                 });
             } else if (index === parseInt(query.logic.many)) {
               mediumService
@@ -87,6 +90,7 @@ function Report({ authService, mediumService }) {
                 .then((result) => {
                   setTimeout(() => {
                     data.push(result.slice(0, query.logic.endDay));
+                    months.push(query.logic.endMonth);
                   }, 1200);
                 });
             } else {
@@ -102,6 +106,7 @@ function Report({ authService, mediumService }) {
                 .then((result) => {
                   setTimeout(() => {
                     data.push(result);
+                    months.push(month);
                   }, 100 * index);
                 });
             }
@@ -109,21 +114,62 @@ function Report({ authService, mediumService }) {
         }
       }
       setTimeout(() => {
+        setMonths(months);
         resolve(data);
       }, 2000);
     });
-    promise.then((data) => {
-      setLoading(false);
-      if (data.length !== 0) {
-        return setData(data);
-      } else {
-        window.alert("조회 쿼리가 잘못 되었습니다. 다시확인해 주세요.");
-      }
-    });
+    promise
+      .then((data) => {
+        let total = [];
+        const gwei = 0.000000000000000001;
+        let grandSoReward = 0;
+        let grandSoTotal = 0;
+        let grandOperation = 0;
+        for (let index = 0; index < data.length; index++) {
+          let soReward = 0;
+          let soTotalReward = 0;
+          let operation = 0;
+          data[index].map((item) => {
+            soReward += parseInt(item.dailyReward);
+            soTotalReward += parseInt(item.dailyRewards);
+            operation += parseInt(item.soLeaderReward);
+            return item;
+          });
+          grandSoReward += soReward * gwei;
+          grandSoTotal += soTotalReward * gwei;
+          grandOperation += operation * gwei;
+          total.push({
+            soReward: soReward * gwei,
+            soTotalReward: soTotalReward * gwei,
+            operation: operation * gwei,
+          });
+        }
+        total.push({
+          grandSoReward,
+          grandSoTotal,
+          grandOperation,
+        });
+        setTotal(total);
+        return data;
+      })
+      .then((data) => {
+        setLoading(false);
+        if (data.length !== 0) {
+          setData(data);
+          return data;
+        } else {
+          if (query !== "") {
+            return window.alert(
+              "조회 쿼리가 잘못 되었습니다. 다시확인해 주세요."
+            );
+          }
+        }
+      });
   }, [mediumService, query]);
 
   return (
     <>
+      {console.log(total)}
       <header className="bg-white shadow">
         <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
@@ -253,7 +299,11 @@ function Report({ authService, mediumService }) {
           </section>
 
           {/*  Reward Log  */}
-          <div className="text-xl mb-4 font-bold">1. Reward Log</div>
+          {data.length !== 0 ? (
+            <div className="text-xl mb-4 font-bold">1. Reward Log</div>
+          ) : (
+            ""
+          )}
           {data.length !== 0 ? (
             data.map((item, id) => <RewardTD item={item} key={id} />)
           ) : !loading ? (
@@ -293,23 +343,19 @@ function Report({ authService, mediumService }) {
                     scope="col"
                     className="py-3 px-6 bg-gray-50 dark:bg-gray-800"
                   >
-                    Date
+                    Month
                   </th>
                   <th scope="col" className="py-3 px-6 bg-gray-50 ">
-                    2022. 06. 09
-                    <br />~ 2022. 06. 30
+                    {months[0] ? <>{months[0]} 월</> : ""}
                   </th>
                   <th scope="col" className="py-3 px-6 bg-gray-50 ">
-                    2022. 06. 09
-                    <br />~ 2022. 06. 30
+                    {months[1] ? <>{months[1]} 월</> : ""}
                   </th>
                   <th scope="col" className="py-3 px-6 bg-gray-50 ">
-                    2022. 06. 09
-                    <br />~ 2022. 06. 30
+                    {months[2] ? <>{months[2]} 월</> : ""}
                   </th>
                   <th scope="col" className="py-3 px-6 bg-gray-50 ">
-                    2022. 06. 09
-                    <br />~ 2022. 06. 30
+                    {months[3] ? <>{months[3]} 월</> : ""}
                   </th>
                   <th scope="col" className="py-3 px-6 bg-gray-50 ">
                     Total
@@ -324,13 +370,63 @@ function Report({ authService, mediumService }) {
                   >
                     SO Total <br /> Reward
                   </th>
-                  <td className="py-4 px-6">7,934.34330 KOK</td>
-                  <td className="py-4 px-6  dark:bg-gray-800">
-                    63,338.30310 KOK
+                  <td className="py-4 px-6">
+                    {total.length >= 1 ? (
+                      total[0].soReward ? (
+                        <>{total[0].soReward.toFixed(2)} KOK </>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
                   </td>
-                  <td className="py-4 px-6">81,938.64884 KOK</td>
-                  <td className="py-4 px-6">21,588.17077 KOK</td>
-                  <td className="py-4 px-6 font-bold">174,799.46601 KOK</td>
+                  <td className="py-4 px-6">
+                    {total.length >= 2 ? (
+                      total[1].soReward ? (
+                        <>{total[1].soReward.toFixed(2)} KOK </>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </td>
+                  <td className="py-4 px-6">
+                    {total.length >= 3 ? (
+                      total[2].soReward ? (
+                        <>{total[2].soReward.toFixed(2)} KOK </>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </td>
+                  <td className="py-4 px-6">
+                    {total.length >= 4 ? (
+                      total[3].soReward ? (
+                        <>{total[3].soReward.toFixed(2)} KOK </>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </td>
+                  <td className="py-4 px-6">
+                    {total.length >= 2 ? (
+                      total[total.length - 1] ? (
+                        <>
+                          {total[total.length - 1].grandSoReward.toFixed(2)} KOK
+                        </>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </td>
                 </tr>
                 <tr className="border-b border-gray-200 dark:border-gray-700">
                   <th
@@ -339,13 +435,63 @@ function Report({ authService, mediumService }) {
                   >
                     SO Leader <br /> Total Reward
                   </th>
-                  <td className="py-4 px-6">7,934.34330 KOK</td>
-                  <td className="py-4 px-6  dark:bg-gray-800">
-                    63,338.30310 KOK
+                  <td className="py-4 px-6">
+                    {total.length >= 1 ? (
+                      total[0].soTotalReward ? (
+                        <>{total[0].soTotalReward.toFixed(2)} KOK </>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
                   </td>
-                  <td className="py-4 px-6">81,938.64884 KOK</td>
-                  <td className="py-4 px-6">21,588.17077 KOK</td>
-                  <td className="py-4 px-6 font-bold">174,799.46601 KOK</td>
+                  <td className="py-4 px-6">
+                    {total.length >= 2 ? (
+                      total[1].soTotalReward ? (
+                        <>{total[1].soTotalReward.toFixed(2)} KOK </>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </td>
+                  <td className="py-4 px-6">
+                    {total.length >= 3 ? (
+                      total[2].soTotalReward ? (
+                        <>{total[2].soTotalReward.toFixed(2)} KOK </>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </td>
+                  <td className="py-4 px-6">
+                    {total.length >= 4 ? (
+                      total[3].soTotalReward ? (
+                        <>{total[3].soTotalReward.toFixed(2)} KOK</>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </td>
+                  <td className="py-4 px-6">
+                    {total.length >= 2 ? (
+                      total[total.length - 1] ? (
+                        <>
+                          {total[total.length - 1].grandSoTotal.toFixed(2)} KOK
+                        </>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </td>
                 </tr>
                 <tr className="border-b border-gray-200 dark:border-gray-700">
                   <th
@@ -354,13 +500,64 @@ function Report({ authService, mediumService }) {
                   >
                     5% <br /> 운영수익
                   </th>
-                  <td className="py-4 px-6">7,934.34330 KOK</td>
-                  <td className="py-4 px-6  dark:bg-gray-800">
-                    63,338.30310 KOK
+                  <td className="py-4 px-6">
+                    {total.length >= 2 ? (
+                      total[0].operation ? (
+                        <>{total[0].operation.toFixed(2)} KOK </>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
                   </td>
-                  <td className="py-4 px-6">81,938.64884 KOK</td>
-                  <td className="py-4 px-6">21,588.17077 KOK</td>
-                  <td className="py-4 px-6 font-bold">174,799.46601 KOK</td>
+                  <td className="py-4 px-6">
+                    {total.length >= 3 ? (
+                      total[1].operation ? (
+                        <>{total[1].operation.toFixed(2)} KOK </>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </td>
+                  <td className="py-4 px-6">
+                    {total.length >= 4 ? (
+                      total[2].operation ? (
+                        <>{total[2].operation.toFixed(2)} KOK </>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </td>
+                  <td className="py-4 px-6">
+                    {total.length >= 5 ? (
+                      total[3].operation ? (
+                        <>{total[3].operation.toFixed(2)} KOK </>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </td>
+                  <td className="py-4 px-6">
+                    {total.length >= 2 ? (
+                      total[total.length - 1] ? (
+                        <>
+                          {total[total.length - 1].grandOperation.toFixed(2)}
+                          KOK
+                        </>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </td>
                 </tr>
               </tbody>
             </table>
