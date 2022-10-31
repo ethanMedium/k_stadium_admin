@@ -34,7 +34,6 @@ class MediumService {
       delete item.extra;
       return item;
     });
-
     data.map((item, idx) => {
       const a = Object.assign(item, data2[idx]);
       return a;
