@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/k_stadium_admin/static/css/main.6f965cf5.css",
-    "main.js": "/k_stadium_admin/static/js/main.8413d7be.js",
-    "index.html": "/k_stadium_admin/index.html",
-    "main.6f965cf5.css.map": "/k_stadium_admin/static/css/main.6f965cf5.css.map",
-    "main.8413d7be.js.map": "/k_stadium_admin/static/js/main.8413d7be.js.map"
+    "main.css": "/static/css/main.6f965cf5.css",
+    "main.js": "/static/js/main.8413d7be.js",
+    "index.html": "/index.html",
+    "main.6f965cf5.css.map": "/static/css/main.6f965cf5.css.map",
+    "main.8413d7be.js.map": "/static/js/main.8413d7be.js.map"
   },
   "entrypoints": [
     "static/css/main.6f965cf5.css",
