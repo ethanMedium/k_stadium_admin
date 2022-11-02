@@ -14,7 +14,11 @@ function Card({ title, image, created, setShowModal, id, setCurrentTopic }) {
       >
         <img
           className="w-full max-h-40"
-          src={image ? image : "./image/nope.jpeg"}
+          src={
+            image
+              ? image
+              : "https://i.picsum.photos/id/486/200/300.jpg?hmac=yDvKMocLz1Sxg1XI9BgCJRlIyKqiBTdI9RZDij_z8xM"
+          }
           alt="nope"
         />
         <div className="max-h-40">

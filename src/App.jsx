@@ -37,6 +37,15 @@ function App({ authService, discourseService, mediumService }) {
           }
         />
         <Route
+          path="/k_stadium_admin"
+          element={
+            <Home
+              authService={authService}
+              discourseService={discourseService}
+            />
+          }
+        />
+        <Route
           path="/monitor"
           element={
             <Monitor
