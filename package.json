@@ -2,7 +2,6 @@
   "name": "k_stadium_admin",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://ethanMedium.github.io/k_stadium_admin",
   "dependencies": {
     "@headlessui/react": "^1.7.3",
     "@heroicons/react": "^2.0.12",
