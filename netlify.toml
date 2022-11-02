@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/report/*"
+  to = "http://192.168.72.109:1111/:splat"
+  status = 200
+  force = true
